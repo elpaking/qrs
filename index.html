@@ -3,6 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- N5 FIX · fuerza modo claro en WhatsApp / Samsung Internet WebView -->
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="msapplication-navbutton-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+(function(){
+  var root = document.documentElement;
+  root.setAttribute('data-theme','light');
+  root.classList.add('n5-force-light');
+  root.style.colorScheme = 'light';
+  window.__N5_FORCE_LIGHT__ = true;
+})();
+</script>
+<style id="n5-force-light-head">
+:root, html{
+  color-scheme: light !important;
+  background:#FFFFFF !important;
+}
+html.n5-force-light, html.n5-force-light body{
+  background:#FFFFFF !important;
+  color:#2D3F54 !important;
+}
+</style>
+
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#F8FAF9">
+<meta name="msapplication-TileColor" content="#F8FAF9">
 <title>N5 Pet — Registra a quien nunca quieres perder · V2.4</title>
 <meta name="description" content="Placa QR inteligente para tu mascota. $349 MXN con envío gratis a todo México.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -1670,9 +1700,1397 @@ button{-webkit-tap-highlight-color:transparent}
   }
 }
 
+
+
+/* ═══════════════════════════════════════
+   FIX V3.2 FINAL · FLOATBAR CONTEXTUAL RESPONSIVA
+   Para el proceso móvil N5 Pet.
+   - Una sola lógica visual para todos los botones del proceso.
+   - Siempre visibles al alcance del pulgar.
+   - El contenido reserva espacio real para que la barra NO tape textos ni opciones.
+   - No toca el flotante global de “Crear mi placa”.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  :root{
+    --n5-process-bar-h:76px;
+    --n5-process-bar-gap:14px;
+  }
+
+  .n5-builder-section{
+    height:100dvh !important;
+    min-height:100dvh !important;
+    overflow:hidden !important;
+    padding:0 !important;
+  }
+
+  .n5-builder-section .sim,
+  .n5-builder-section .sim.n5-builder-sim{
+    height:100dvh !important;
+    max-width:480px !important;
+    overflow:hidden !important;
+  }
+
+  .n5-builder-section .sim-shell{
+    height:100% !important;
+    grid-template-rows:auto auto minmax(0,1fr) !important;
+    padding:6px 7px calc(7px + env(safe-area-inset-bottom,0px)) !important;
+    gap:5px !important;
+  }
+
+  .n5-builder-section .builder-panel{
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+
+  .n5-builder-section .builder-card{
+    position:relative !important;
+    height:100% !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
+    padding:8px 10px 0 !important;
+    border-radius:20px !important;
+  }
+
+  .n5-builder-section .stage-progress-mini,
+  .n5-builder-section .builder-guide{
+    flex:0 0 auto !important;
+  }
+
+  /* El panel sí puede desplazarse, pero tiene espacio reservado para la barra. */
+  .n5-builder-section .step-panel.active{
+    display:block !important;
+    flex:1 1 auto !important;
+    min-height:0 !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior:contain !important;
+    padding-bottom:calc(var(--n5-process-bar-h) + var(--n5-process-bar-gap) + env(safe-area-inset-bottom,0px)) !important;
+    scroll-padding-bottom:calc(var(--n5-process-bar-h) + var(--n5-process-bar-gap) + env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  /* Floatbar contextual del proceso. No es el sticky global. */
+  .n5-builder-section .step-panel.active .step-actions{
+    position:absolute !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    z-index:220 !important;
+    width:auto !important;
+    min-height:var(--n5-process-bar-h) !important;
+    margin:0 !important;
+    padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px)) !important;
+    display:grid !important;
+    align-items:center !important;
+    gap:8px !important;
+    background:rgba(255,255,255,.98) !important;
+    border-top:1px solid rgba(82,100,122,.14) !important;
+    box-shadow:0 -12px 28px rgba(45,63,84,.12) !important;
+    backdrop-filter:blur(10px) !important;
+    -webkit-backdrop-filter:blur(10px) !important;
+    border-radius:0 0 20px 20px !important;
+    transform:none !important;
+  }
+
+  .n5-builder-section #panelName.step-panel.active .step-actions{
+    grid-template-columns:1fr !important;
+  }
+
+  .n5-builder-section #panelPhone.step-panel.active .step-actions,
+  .n5-builder-section #panelColor.step-panel.active .step-actions,
+  .n5-builder-section #panelProfile.step-panel.active .step-actions{
+    grid-template-columns:minmax(82px,.76fr) minmax(0,1.24fr) !important;
+  }
+
+  .n5-builder-section .step-panel.active .btn-main,
+  .n5-builder-section .step-panel.active .btn-ghost{
+    width:100% !important;
+    min-height:46px !important;
+    height:auto !important;
+    padding:11px 10px !important;
+    border-radius:13px !important;
+    font-size:12.6px !important;
+    line-height:1.08 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+
+  .n5-builder-section .step-panel.active .btn-ghost{
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  /* Etapa 3: el botón de WhatsApp queda fijo abajo y el contenido reserva espacio. */
+  .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(88px + env(safe-area-inset-bottom,0px)) !important;
+    scroll-padding-bottom:calc(88px + env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .step-actions{
+    position:static !important;
+    min-height:0 !important;
+    width:100% !important;
+    margin:6px 0 0 !important;
+    padding:0 !important;
+    display:block !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    border-radius:0 !important;
+    z-index:auto !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .step-actions .btn-ghost{
+    min-height:36px !important;
+    padding:8px 10px !important;
+    font-size:11.5px !important;
+    border-radius:11px !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .final-cta{
+    position:absolute !important;
+    left:10px !important;
+    right:10px !important;
+    bottom:calc(10px + env(safe-area-inset-bottom,0px)) !important;
+    z-index:230 !important;
+    width:auto !important;
+    min-height:54px !important;
+    margin:0 !important;
+    padding:13px 14px !important;
+    border-radius:15px !important;
+    font-size:13.6px !important;
+    line-height:1.12 !important;
+    white-space:normal !important;
+    box-shadow:0 14px 30px rgba(10,233,138,.30),0 8px 22px rgba(45,63,84,.13),inset 0 1px rgba(255,255,255,.45) !important;
+    transform:none !important;
+  }
+
+  .n5-builder-section #panelReview .checkout-note{
+    display:none !important;
+  }
+
+  /* Los extras del perfil pueden seguir existiendo, pero jamás debajo de la barra. */
+  .n5-builder-section #panelProfile.step-panel.active{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:7px !important;
+  }
+  .n5-builder-section #panelProfile .profile-headline{order:1 !important;margin-bottom:0 !important;}
+  .n5-builder-section #panelProfile .two-col{order:2 !important;margin-bottom:0 !important;}
+  .n5-builder-section #panelProfile .city-chips{order:3 !important;margin-top:0 !important;}
+  .n5-builder-section #panelProfile .collapsible-field{order:4 !important;margin-bottom:0 !important;}
+  .n5-builder-section #panelProfile .step-actions{order:99 !important;}
+
+  /* El CTA global no compite con el CTA contextual. */
+  .sticky.is-over-builder{
+    transform:translateY(100%) !important;
+    pointer-events:none !important;
+  }
+}
+
+@media(max-width:380px){
+    :root{--n5-process-bar-h:70px;}
+
+    .n5-builder-section .builder-card{
+      padding-left:8px !important;
+      padding-right:8px !important;
+    }
+
+    .n5-builder-section .step-panel.active .step-actions{
+      padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+      gap:6px !important;
+    }
+
+    .n5-builder-section #panelPhone.step-panel.active .step-actions,
+    .n5-builder-section #panelColor.step-panel.active .step-actions,
+    .n5-builder-section #panelProfile.step-panel.active .step-actions{
+      grid-template-columns:minmax(72px,.70fr) minmax(0,1.30fr) !important;
+    }
+
+    .n5-builder-section .step-panel.active .btn-main,
+    .n5-builder-section .step-panel.active .btn-ghost{
+      min-height:42px !important;
+      padding:9px 7px !important;
+      font-size:11.4px !important;
+      border-radius:12px !important;
+    }
+
+    .n5-builder-section #panelReview.step-panel.active .final-cta{
+      left:8px !important;
+      right:8px !important;
+      bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;
+      min-height:50px !important;
+      font-size:12.4px !important;
+    }
+}
+
+@media(max-height:620px) and (max-width:900px){
+  :root{--n5-process-bar-h:66px;}
+
+  .n5-builder-section .preview-card{
+    height:146px !important;
+  }
+
+  .n5-builder-section .step-panel.active .btn-main,
+  .n5-builder-section .step-panel.active .btn-ghost{
+    min-height:40px !important;
+    font-size:11.2px !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .final-cta{
+    min-height:46px !important;
+    font-size:12.1px !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.3 · FLOATBAR CONTEXTUAL SIN TAPAR TEXTO
+   - Mantiene la barra del proceso dentro del builder móvil.
+   - Reserva espacio real dentro de cada panel para que no cubra textos/opciones.
+   - Compacta el preview en etapa 2 y 3 para liberar área útil.
+   - No modifica el CTA global de “Crear mi placa”.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  .n5-builder-section{
+    --n5-process-bar-h:74px;
+    --n5-process-bar-pad:10px;
+    --n5-process-safe:env(safe-area-inset-bottom,0px);
+    --n5-preview-compact-h:190px;
+  }
+
+  /* Al entrar a Perfil QR o Revisión, el preview baja de tamaño para que el formulario respire. */
+  .n5-builder-section[data-current-panel="profile"],
+  .n5-builder-section:has(#panelProfile.active){
+    --n5-preview-compact-h:156px;
+    --n5-process-bar-h:74px;
+  }
+
+  .n5-builder-section[data-current-panel="review"],
+  .n5-builder-section:has(#panelReview.active){
+    --n5-preview-compact-h:144px;
+    --n5-process-bar-h:76px;
+  }
+
+  .n5-builder-section .preview-card{
+    height:var(--n5-preview-compact-h) !important;
+    transition:height .22s ease !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .value-strip,
+  .n5-builder-section[data-current-panel="profile"] .emulation-note,
+  .n5-builder-section[data-current-panel="review"] .value-strip,
+  .n5-builder-section[data-current-panel="review"] .emulation-note,
+  .n5-builder-section:has(#panelProfile.active) .value-strip,
+  .n5-builder-section:has(#panelProfile.active) .emulation-note,
+  .n5-builder-section:has(#panelReview.active) .value-strip,
+  .n5-builder-section:has(#panelReview.active) .emulation-note{
+    display:none !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .preview-top,
+  .n5-builder-section[data-current-panel="review"] .preview-top,
+  .n5-builder-section:has(#panelProfile.active) .preview-top,
+  .n5-builder-section:has(#panelReview.active) .preview-top{
+    margin-bottom:3px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .preview-hero-title,
+  .n5-builder-section[data-current-panel="review"] .preview-hero-title,
+  .n5-builder-section:has(#panelProfile.active) .preview-hero-title,
+  .n5-builder-section:has(#panelReview.active) .preview-hero-title{
+    font-size:13.2px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .preview-hero-sub,
+  .n5-builder-section[data-current-panel="review"] .preview-hero-sub,
+  .n5-builder-section:has(#panelProfile.active) .preview-hero-sub,
+  .n5-builder-section:has(#panelReview.active) .preview-hero-sub{
+    display:none !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .plate-stage,
+  .n5-builder-section[data-current-panel="review"] .plate-stage,
+  .n5-builder-section:has(#panelProfile.active) .plate-stage,
+  .n5-builder-section:has(#panelReview.active) .plate-stage{
+    width:100px !important;
+    height:100px !important;
+    border-radius:15px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .placa-col,
+  .n5-builder-section[data-current-panel="review"] .placa-col,
+  .n5-builder-section:has(#panelProfile.active) .placa-col,
+  .n5-builder-section:has(#panelReview.active) .placa-col{
+    width:104px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .placa-frente-wrap,
+  .n5-builder-section[data-current-panel="review"] .placa-frente-wrap,
+  .n5-builder-section:has(#panelProfile.active) .placa-frente-wrap,
+  .n5-builder-section:has(#panelReview.active) .placa-frente-wrap{
+    width:92px !important;
+    height:92px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .placa-png-wrap,
+  .n5-builder-section[data-current-panel="review"] .placa-png-wrap,
+  .n5-builder-section:has(#panelProfile.active) .placa-png-wrap,
+  .n5-builder-section:has(#panelReview.active) .placa-png-wrap{
+    width:88px !important;
+    height:88px !important;
+  }
+
+  .n5-builder-section[data-current-panel="profile"] .placa-swap-icon,
+  .n5-builder-section[data-current-panel="review"] .placa-swap-icon,
+  .n5-builder-section:has(#panelProfile.active) .placa-swap-icon,
+  .n5-builder-section:has(#panelReview.active) .placa-swap-icon{
+    display:none !important;
+  }
+
+  .n5-builder-section .builder-card{
+    position:relative !important;
+    overflow:hidden !important;
+    padding-bottom:0 !important;
+  }
+
+  /* El contenido de cada panel deja espacio para la floatbar contextual. */
+  .n5-builder-section .step-panel.active{
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    padding-bottom:calc(var(--n5-process-bar-h) + 22px + var(--n5-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-process-bar-h) + 22px + var(--n5-process-safe)) !important;
+  }
+
+  /* Barra contextual inferior: local al builder, no global. */
+  .n5-builder-section .step-panel.active .step-actions{
+    position:absolute !important;
+    left:10px !important;
+    right:10px !important;
+    bottom:calc(8px + var(--n5-process-safe)) !important;
+    z-index:260 !important;
+    width:auto !important;
+    min-height:auto !important;
+    margin:0 !important;
+    padding:8px !important;
+    display:grid !important;
+    align-items:center !important;
+    gap:8px !important;
+    background:rgba(255,255,255,.985) !important;
+    border:1px solid rgba(82,100,122,.16) !important;
+    border-radius:18px !important;
+    box-shadow:0 -10px 28px rgba(45,63,84,.13),0 8px 22px rgba(45,63,84,.08) !important;
+    backdrop-filter:blur(12px) !important;
+    -webkit-backdrop-filter:blur(12px) !important;
+    transform:none !important;
+  }
+
+  .n5-builder-section #panelName.step-panel.active .step-actions{
+    grid-template-columns:1fr !important;
+  }
+
+  .n5-builder-section #panelPhone.step-panel.active .step-actions,
+  .n5-builder-section #panelColor.step-panel.active .step-actions,
+  .n5-builder-section #panelProfile.step-panel.active .step-actions{
+    grid-template-columns:minmax(82px,.76fr) minmax(0,1.24fr) !important;
+  }
+
+  .n5-builder-section .step-panel.active .btn-main,
+  .n5-builder-section .step-panel.active .btn-ghost{
+    min-height:44px !important;
+    width:100% !important;
+    padding:10px 9px !important;
+    border-radius:13px !important;
+    font-size:12.2px !important;
+    line-height:1.08 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+
+  /* Etapa 3: el botón de WhatsApp usa la misma lógica de floatbar, pero como CTA único. */
+  .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(92px + var(--n5-process-safe)) !important;
+    scroll-padding-bottom:calc(92px + var(--n5-process-safe)) !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .step-actions{
+    position:static !important;
+    display:block !important;
+    width:100% !important;
+    margin:6px 0 0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    border-radius:0 !important;
+    z-index:auto !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .step-actions .btn-ghost{
+    min-height:36px !important;
+    font-size:11.3px !important;
+    padding:8px 10px !important;
+    border-radius:12px !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .final-cta{
+    position:absolute !important;
+    left:10px !important;
+    right:10px !important;
+    bottom:calc(8px + var(--n5-process-safe)) !important;
+    z-index:270 !important;
+    width:auto !important;
+    min-height:54px !important;
+    margin:0 !important;
+    padding:13px 14px !important;
+    border-radius:18px !important;
+    font-size:13.2px !important;
+    line-height:1.12 !important;
+    white-space:normal !important;
+    box-shadow:0 -10px 28px rgba(45,63,84,.12),0 14px 30px rgba(10,233,138,.30),inset 0 1px rgba(255,255,255,.45) !important;
+    transform:none !important;
+  }
+
+  .n5-builder-section #panelReview .checkout-note{
+    display:block !important;
+    margin:6px 0 0 !important;
+    padding-bottom:0 !important;
+  }
+
+  .n5-builder-section .sticky.is-over-builder,
+  .sticky.is-over-builder{
+    transform:translateY(100%) !important;
+    pointer-events:none !important;
+  }
+}
+
+@media(max-width:380px){
+  .n5-builder-section{
+    --n5-process-bar-h:68px;
+    --n5-preview-compact-h:174px;
+  }
+
+  .n5-builder-section[data-current-panel="profile"],
+  .n5-builder-section:has(#panelProfile.active){
+    --n5-preview-compact-h:138px;
+  }
+
+  .n5-builder-section[data-current-panel="review"],
+  .n5-builder-section:has(#panelReview.active){
+    --n5-preview-compact-h:128px;
+  }
+
+  .n5-builder-section .step-panel.active .step-actions{
+    left:8px !important;
+    right:8px !important;
+    bottom:calc(7px + env(safe-area-inset-bottom,0px)) !important;
+    padding:7px !important;
+    gap:6px !important;
+    border-radius:16px !important;
+  }
+
+  .n5-builder-section #panelPhone.step-panel.active .step-actions,
+  .n5-builder-section #panelColor.step-panel.active .step-actions,
+  .n5-builder-section #panelProfile.step-panel.active .step-actions{
+    grid-template-columns:minmax(72px,.70fr) minmax(0,1.30fr) !important;
+  }
+
+  .n5-builder-section .step-panel.active .btn-main,
+  .n5-builder-section .step-panel.active .btn-ghost{
+    min-height:40px !important;
+    padding:8px 7px !important;
+    font-size:11.1px !important;
+    border-radius:12px !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .final-cta{
+    left:8px !important;
+    right:8px !important;
+    bottom:calc(7px + env(safe-area-inset-bottom,0px)) !important;
+    min-height:50px !important;
+    padding:11px 12px !important;
+    font-size:12.1px !important;
+    border-radius:16px !important;
+  }
+}
+
+@media(max-height:620px) and (max-width:900px){
+  .n5-builder-section{
+    --n5-preview-compact-h:132px;
+    --n5-process-bar-h:64px;
+  }
+
+  .n5-builder-section[data-current-panel="profile"],
+  .n5-builder-section[data-current-panel="review"],
+  .n5-builder-section:has(#panelProfile.active),
+  .n5-builder-section:has(#panelReview.active){
+    --n5-preview-compact-h:112px;
+  }
+
+  .n5-builder-section .step-panel.active .btn-main,
+  .n5-builder-section .step-panel.active .btn-ghost{
+    min-height:38px !important;
+    font-size:10.8px !important;
+  }
+
+  .n5-builder-section #panelReview.step-panel.active .final-cta{
+    min-height:46px !important;
+    font-size:11.7px !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.4 · FLOATBAR GLOBAL DEL PROCESO SIN TAPAR CONTENIDO
+   Problema corregido: los botones del proceso estaban anclados dentro del panel
+   y terminaban encima de títulos/cards. Ahora la barra vive abajo del viewport
+   solo mientras el builder está en pantalla.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  :root{
+    --n5-process-footer-h:76px;
+    --n5-process-footer-safe:env(safe-area-inset-bottom,0px);
+  }
+
+  /* El builder ya no necesita encerrar la barra: la barra es contextual-global. */
+  .n5-builder-section .builder-card{
+    overflow:hidden !important;
+    padding-bottom:8px !important;
+  }
+
+  /* Cada panel reserva espacio suficiente para que el último contenido nunca quede debajo del CTA. */
+  .n5-builder-section .step-panel.active{
+    padding-bottom:calc(var(--n5-process-footer-h) + 34px + var(--n5-process-footer-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-process-footer-h) + 34px + var(--n5-process-footer-safe)) !important;
+  }
+
+  /* Por seguridad, si el builder no está en pantalla, no mostramos botones del proceso. */
+  body:not(.n5-process-inview) .n5-builder-section .step-panel.active .step-actions,
+  body:not(.n5-process-inview) .n5-builder-section #panelReview.step-panel.active .final-cta{
+    display:none !important;
+  }
+
+  /* Barra inferior única del proceso: al pulgar, fuera del contenido y sin tapar textos. */
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions{
+    position:fixed !important;
+    left:50% !important;
+    right:auto !important;
+    bottom:calc(10px + var(--n5-process-footer-safe)) !important;
+    transform:translateX(-50%) !important;
+    z-index:9998 !important;
+    width:min(456px, calc(100vw - 22px)) !important;
+    min-height:auto !important;
+    margin:0 !important;
+    padding:8px !important;
+    display:grid !important;
+    align-items:center !important;
+    gap:8px !important;
+    background:rgba(255,255,255,.985) !important;
+    border:1px solid rgba(82,100,122,.16) !important;
+    border-radius:20px !important;
+    box-shadow:0 -10px 28px rgba(45,63,84,.13),0 8px 22px rgba(45,63,84,.08) !important;
+    backdrop-filter:blur(14px) !important;
+    -webkit-backdrop-filter:blur(14px) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelName.step-panel.active .step-actions{
+    grid-template-columns:1fr !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelPhone.step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelColor.step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelProfile.step-panel.active .step-actions{
+    grid-template-columns:minmax(82px,.72fr) minmax(0,1.28fr) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section .step-panel.active .btn-main,
+  body.n5-process-inview .n5-builder-section .step-panel.active .btn-ghost{
+    width:100% !important;
+    min-height:46px !important;
+    padding:10px 9px !important;
+    border-radius:14px !important;
+    font-size:12.4px !important;
+    line-height:1.08 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+
+  /* Etapa 3: dejamos el botón de regresar dentro del contenido y solo fijamos el CTA de WhatsApp. */
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(var(--n5-process-footer-h) + 38px + var(--n5-process-footer-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-process-footer-h) + 38px + var(--n5-process-footer-safe)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .step-actions{
+    position:static !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    width:100% !important;
+    display:block !important;
+    margin:6px 0 0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    z-index:auto !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .step-actions .btn-ghost{
+    min-height:36px !important;
+    padding:8px 10px !important;
+    font-size:11.3px !important;
+    border-radius:12px !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    position:fixed !important;
+    left:50% !important;
+    right:auto !important;
+    bottom:calc(10px + var(--n5-process-footer-safe)) !important;
+    transform:translateX(-50%) !important;
+    z-index:9999 !important;
+    width:min(456px, calc(100vw - 22px)) !important;
+    min-height:58px !important;
+    margin:0 !important;
+    padding:14px 16px !important;
+    border-radius:20px !important;
+    font-size:14px !important;
+    line-height:1.12 !important;
+    white-space:normal !important;
+    text-align:center !important;
+    box-shadow:0 -10px 28px rgba(45,63,84,.12),0 16px 34px rgba(10,233,138,.34),inset 0 1px rgba(255,255,255,.45) !important;
+  }
+
+  /* Mientras el proceso esté activo, el sticky general de venta no compite con esta barra. */
+  body.n5-process-inview .sticky,
+  body.n5-process-inview .sticky.on{
+    transform:translateY(100%) !important;
+    pointer-events:none !important;
+  }
+}
+
+@media(max-width:380px){
+  :root{--n5-process-footer-h:70px;}
+
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    width:calc(100vw - 16px) !important;
+    bottom:calc(8px + env(safe-area-inset-bottom,0px)) !important;
+    border-radius:18px !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelPhone.step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelColor.step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelProfile.step-panel.active .step-actions{
+    grid-template-columns:minmax(70px,.68fr) minmax(0,1.32fr) !important;
+    gap:6px !important;
+    padding:7px !important;
+  }
+
+  body.n5-process-inview .n5-builder-section .step-panel.active .btn-main,
+  body.n5-process-inview .n5-builder-section .step-panel.active .btn-ghost{
+    min-height:42px !important;
+    padding:8px 7px !important;
+    font-size:11.1px !important;
+    border-radius:13px !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    min-height:52px !important;
+    padding:12px 13px !important;
+    font-size:12.3px !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.5 · LIMPIEZA FINAL REVIEW
+   - En móvil, el botón secundario “← Perfil QR” se oculta en la etapa final
+     para que no compita ni quede debajo del WhatsApp CTA.
+   - La floatbar sube unos pixeles para no quedar cortada por barras del navegador.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions{
+    bottom:calc(18px + env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .step-actions{
+    display:none !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    bottom:calc(18px + env(safe-area-inset-bottom,0px)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(104px + env(safe-area-inset-bottom,0px)) !important;
+    scroll-padding-bottom:calc(104px + env(safe-area-inset-bottom,0px)) !important;
+  }
+}
+@media(max-width:380px){
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    bottom:calc(16px + env(safe-area-inset-bottom,0px)) !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.6 · FLOATBAR GLOBAL REAL DEL PROCESO MÓVIL
+   - Los botones del proceso salen del panel y viven en una sola barra global.
+   - El contenido reserva espacio para que no tape “editar mensaje”, “agregar notas” ni resumen.
+   - No toca el sticky global de “Crear mi placa”; lo oculta solo mientras el builder está activo.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  :root{
+    --n5-global-process-bar-h:88px;
+    --n5-global-process-safe:env(safe-area-inset-bottom,0px);
+  }
+
+  body.n5-process-inview{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + var(--n5-global-process-safe)) !important;
+  }
+
+  /* Neutraliza los parches anteriores que anclaban botones dentro del panel. */
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    position:static !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+    z-index:auto !important;
+    width:auto !important;
+    min-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+
+  /* En móvil, los botones originales se conservan para lógica/JS, pero no ocupan ni tapan pantalla. */
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    display:none !important;
+  }
+
+  /* El contenido tiene aire inferior real para que la barra global nunca cubra opciones. */
+  .n5-builder-section .step-panel.active{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + 92px + var(--n5-global-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 92px + var(--n5-global-process-safe)) !important;
+  }
+  .n5-builder-section #panelProfile.step-panel.active{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + 132px + var(--n5-global-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 132px + var(--n5-global-process-safe)) !important;
+  }
+  .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + 126px + var(--n5-global-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 126px + var(--n5-global-process-safe)) !important;
+  }
+
+  /* La tarjeta ya no debe reservar un footer interno; la barra vive fuera. */
+  .n5-builder-section .builder-card{
+    padding-bottom:8px !important;
+  }
+
+  /* Barra global del proceso */
+  .n5-process-floatbar{
+    position:fixed;
+    left:50%;
+    bottom:calc(12px + var(--n5-global-process-safe));
+    transform:translate(-50%,125%);
+    width:min(456px, calc(100vw - 18px));
+    z-index:10050;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:transform .24s ease, opacity .24s ease, visibility .24s ease;
+  }
+
+  body.n5-process-inview .n5-process-floatbar.is-visible{
+    transform:translate(-50%,0);
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+  }
+
+  .n5-process-floatbar__inner{
+    display:grid;
+    grid-template-columns:minmax(78px,.72fr) minmax(0,1.28fr);
+    gap:8px;
+    align-items:center;
+    padding:8px;
+    border-radius:22px;
+    background:rgba(255,255,255,.985);
+    border:1px solid rgba(82,100,122,.16);
+    box-shadow:0 -12px 30px rgba(45,63,84,.14),0 12px 28px rgba(45,63,84,.10);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+
+  .n5-process-floatbar[data-has-back="false"] .n5-process-floatbar__inner{
+    grid-template-columns:1fr;
+  }
+
+  .n5-process-floatbar__back[hidden]{display:none !important;}
+
+  .n5-process-floatbar__back,
+  .n5-process-floatbar__main{
+    width:100%;
+    min-height:48px;
+    border:0;
+    border-radius:15px;
+    padding:11px 10px;
+    font-family:var(--font);
+    font-size:12.6px;
+    font-weight:950;
+    line-height:1.08;
+    text-align:center;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .n5-process-floatbar__back{
+    background:var(--brand-soft);
+    color:var(--brand-slate);
+  }
+
+  .n5-process-floatbar__main{
+    background:linear-gradient(180deg,var(--action-top) 0%,var(--action) 100%);
+    color:var(--action-ink);
+    box-shadow:0 12px 25px rgba(10,233,138,.24), inset 0 1px rgba(255,255,255,.42);
+  }
+
+  .n5-process-floatbar__main:disabled{
+    background:#C9C9C3 !important;
+    color:#72726C !important;
+    box-shadow:none !important;
+    cursor:not-allowed;
+  }
+
+  .n5-process-floatbar__main.is-whatsapp{
+    min-height:58px;
+    border-radius:20px;
+    font-size:14px;
+    box-shadow:0 16px 34px rgba(10,233,138,.34),0 10px 24px rgba(45,63,84,.12),inset 0 1px rgba(255,255,255,.45);
+  }
+
+  .n5-process-floatbar[data-panel="review"] .n5-process-floatbar__inner{
+    grid-template-columns:minmax(78px,.58fr) minmax(0,1.42fr);
+  }
+
+  /* Mientras el proceso esté activo, el CTA global de venta no compite. */
+  body.n5-process-inview .sticky,
+  body.n5-process-inview .sticky.on{
+    transform:translateY(100%) !important;
+    pointer-events:none !important;
+  }
+}
+
+@media(max-width:380px){
+  :root{--n5-global-process-bar-h:82px;}
+  .n5-process-floatbar{width:calc(100vw - 14px);bottom:calc(10px + env(safe-area-inset-bottom,0px));}
+  .n5-process-floatbar__inner{gap:6px;padding:7px;border-radius:19px;}
+  .n5-process-floatbar__back,
+  .n5-process-floatbar__main{min-height:44px;padding:9px 7px;font-size:11.4px;border-radius:14px;}
+  .n5-process-floatbar__main.is-whatsapp{min-height:52px;font-size:12.4px;border-radius:18px;}
+}
+
+@media(min-width:901px){
+  .n5-process-floatbar{display:none !important;}
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.7 · FLOATBAR GLOBAL WEBVIEW/WHATSAPP SAFE
+   La barra vive fuera del builder, pegada al viewport real, y el contenido reserva espacio.
+═══════════════════════════════════════ */
+@media(max-width:900px){
+  :root{
+    --n5-global-process-bar-h:88px;
+    --n5-global-process-safe:env(safe-area-inset-bottom,0px);
+  }
+
+  html{
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 34px + var(--n5-global-process-safe));
+  }
+
+  body.n5-process-inview{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + var(--n5-global-process-safe));
+  }
+
+  body.n5-process-inview .n5-builder-section{
+    padding-bottom:calc(150px + var(--n5-global-process-safe)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section .step-panel.active{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + 150px + var(--n5-global-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 150px + var(--n5-global-process-safe)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section #panelProfile.step-panel.active,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active{
+    padding-bottom:calc(var(--n5-global-process-bar-h) + 178px + var(--n5-global-process-safe)) !important;
+    scroll-padding-bottom:calc(var(--n5-global-process-bar-h) + 178px + var(--n5-global-process-safe)) !important;
+  }
+
+  body.n5-process-inview .n5-builder-section .step-panel.active .step-actions,
+  body.n5-process-inview .n5-builder-section #panelReview.step-panel.active .final-cta{
+    display:none !important;
+  }
+
+  body.n5-process-inview .n5-builder-section .collapsible-field:last-of-type,
+  body.n5-process-inview .n5-builder-section .review-social,
+  body.n5-process-inview .n5-builder-section .impact-card{
+    margin-bottom:22px !important;
+  }
+
+  .n5-process-floatbar{
+    position:fixed !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    width:100% !important;
+    z-index:2147483000 !important;
+    padding:10px 12px calc(10px + var(--n5-global-process-safe)) !important;
+    background:rgba(255,255,255,.965) !important;
+    border-top:1px solid rgba(10,233,138,.24) !important;
+    box-shadow:0 -14px 30px rgba(45,63,84,.16) !important;
+    backdrop-filter:blur(14px) !important;
+    -webkit-backdrop-filter:blur(14px) !important;
+    transform:translateY(125%) !important;
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+    transition:transform .24s ease,opacity .24s ease,visibility .24s ease !important;
+  }
+
+  body.n5-process-inview .n5-process-floatbar.is-visible{
+    transform:translateY(0) !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+  }
+
+  .n5-process-floatbar__inner{
+    max-width:480px !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    display:grid !important;
+    grid-template-columns:minmax(86px,.64fr) minmax(0,1.36fr) !important;
+    gap:10px !important;
+    align-items:center !important;
+    background:transparent !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+
+  .n5-process-floatbar[data-has-back="false"] .n5-process-floatbar__inner{
+    grid-template-columns:1fr !important;
+  }
+
+  .n5-process-floatbar[data-panel="review"] .n5-process-floatbar__inner{
+    grid-template-columns:minmax(82px,.56fr) minmax(0,1.44fr) !important;
+  }
+
+  .n5-process-floatbar__back,
+  .n5-process-floatbar__main{
+    min-height:54px !important;
+    border-radius:16px !important;
+    padding:12px 12px !important;
+    font-size:13px !important;
+    line-height:1.08 !important;
+  }
+
+  .n5-process-floatbar__main.is-whatsapp{
+    min-height:58px !important;
+    font-size:13.4px !important;
+    border-radius:18px !important;
+  }
+
+  body.n5-process-inview .sticky,
+  body.n5-process-inview .sticky.on{
+    transform:translateY(120%) !important;
+    pointer-events:none !important;
+  }
+}
+
+@media(max-width:380px){
+  :root{--n5-global-process-bar-h:84px;}
+  .n5-process-floatbar{
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+  }
+  .n5-process-floatbar__inner{
+    gap:7px !important;
+    grid-template-columns:minmax(72px,.54fr) minmax(0,1.46fr) !important;
+  }
+  .n5-process-floatbar__back,
+  .n5-process-floatbar__main{
+    min-height:50px !important;
+    padding:10px 8px !important;
+    font-size:11.8px !important;
+  }
+  .n5-process-floatbar__main.is-whatsapp{
+    min-height:54px !important;
+    font-size:12.2px !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.8 · WHATSAPP / ANDROID WEBVIEW LIGHT BACKGROUND
+   Evita que WhatsApp WebView fuerce fondo negro en modo oscuro.
+═══════════════════════════════════════ */
+:root{
+  color-scheme:light only;
+  supported-color-schemes:light;
+}
+html,
+body{
+  min-height:100%;
+  background:#F8FAF9 !important;
+  color-scheme:light only;
+}
+body{
+  background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 48%,#F5F5F3 100%) !important;
+}
+input,
+textarea,
+select,
+button{
+  color-scheme:light only;
+}
+.nav,
+.hero,
+.hero-body,
+.trust,
+.how,
+.testi,
+.faq,
+.pricing,
+.fondo,
+.cta-final,
+.n5-builder-section,
+.builder-card,
+.preview-card,
+.mobile-sales-header,
+.stage-progress-mini,
+.step-panel,
+.review-card,
+.collapsible-field,
+.profile-headline,
+.impact-card,
+.plate-stage,
+.value-pill,
+.emulation-note,
+.n5-process-floatbar,
+.n5-process-floatbar__inner{
+  color-scheme:light only;
+}
+@media(max-width:900px){
+  html,
+  body{
+    background:#F8FAF9 !important;
+  }
+  .n5-builder-section{
+    background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 100%) !important;
+  }
+  .builder-card,
+  .preview-card,
+  .mobile-sales-header,
+  .review-card,
+  .collapsible-field{
+    background:#FFFFFF !important;
+  }
+  .n5-process-floatbar{
+    background:#FFFFFF !important;
+  }
+}
+@media(prefers-color-scheme:dark){
+  html,
+  body{
+    background:#F8FAF9 !important;
+    color:#2D3F54 !important;
+  }
+  .nav,
+  .hero-body,
+  .trust,
+  .how,
+  .testi,
+  .faq,
+  .builder-card,
+  .preview-card,
+  .mobile-sales-header,
+  .review-card,
+  .collapsible-field,
+  .value-pill{
+    background:#FFFFFF !important;
+  }
+  .n5-builder-section,
+  .pricing,
+  .fondo{
+    background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 100%) !important;
+  }
+  .n5-process-floatbar{
+    background:#FFFFFF !important;
+  }
+  .sim-inp,
+  .sim-area,
+  .tel-inp,
+  .country-select,
+  input,
+  textarea,
+  select{
+    background:#FFFFFF !important;
+    color:#0F0F0F !important;
+    -webkit-text-fill-color:#0F0F0F !important;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════
+   FIX V3.9 · SAMSUNG / WHATSAPP DARK MODE HARD LOCK
+   Esta capa va al final para ganar la cascada.
+═══════════════════════════════════════ */
+:root,
+html,
+body{
+  color-scheme:light !important;
+  forced-color-adjust:none !important;
+  background-color:#FFFFFF !important;
+}
+html{
+  background:#FFFFFF !important;
+}
+body{
+  background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 52%,#F5F5F3 100%) !important;
+  color:#2D3F54 !important;
+}
+body::before,
+body::after{
+  background:transparent !important;
+}
+.nav,
+.nav .wrap,
+.nav-in,
+.mob-menu,
+.hero,
+.hero-body,
+.trust,
+.how,
+.testi,
+.faq,
+.n5-builder-section,
+.builder-card,
+.preview-card,
+.mobile-sales-header,
+.stage-progress-mini,
+.step-panel,
+.review-card,
+.collapsible-field,
+.profile-headline,
+.impact-card,
+.plate-stage,
+.value-pill,
+.emulation-note,
+.n5-process-floatbar,
+.n5-process-floatbar__inner{
+  color-scheme:light !important;
+  forced-color-adjust:none !important;
+}
+.nav,
+.nav .wrap,
+.nav-in,
+.mob-menu{
+  background:#FFFFFF !important;
+  color:#2D3F54 !important;
+}
+.hero{
+  background:#FFFFFF !important;
+}
+.hero-body{
+  background:linear-gradient(180deg,#FFFFFF 0%,#F8FAF9 100%) !important;
+  color:#2D3F54 !important;
+}
+.hero-h1,
+.hero-h1 span,
+.builder-head h2,
+.step-title,
+.review-line strong,
+.profile-headline strong,
+.impact-copy strong{
+  color:#2D3F54 !important;
+}
+.hero-h1 em,
+.logo-pet,
+.logo-n,
+.step-eyebrow,
+.review-card h3{
+  color:#028183 !important;
+}
+.hero-sub,
+.hero-meta,
+.field-hint,
+.review-line,
+.collapsible-copy span,
+.impact-copy span{
+  color:#52647A !important;
+}
+.hero-badge,
+.trust,
+.how,
+.testi,
+.faq,
+.builder-card,
+.preview-card,
+.mobile-sales-header,
+.review-card,
+.collapsible-field,
+.value-pill{
+  background:#FFFFFF !important;
+}
+.pricing,
+.fondo,
+.n5-builder-section{
+  background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 100%) !important;
+}
+.sim-inp,
+.sim-area,
+.tel-inp,
+.country-select,
+input,
+textarea,
+select{
+  background:#FFFFFF !important;
+  color:#0F0F0F !important;
+  -webkit-text-fill-color:#0F0F0F !important;
+  color-scheme:light !important;
+  forced-color-adjust:none !important;
+}
+input::placeholder,
+textarea::placeholder{
+  color:#8A95A3 !important;
+  -webkit-text-fill-color:#8A95A3 !important;
+}
+.hero-bg,
+.hero-bg::before,
+.hero-bg::after,
+img,
+svg,
+.preview-card,
+.plate-stage,
+.placa-frente-img,
+.placa-qr{
+  filter:none !important;
+  -webkit-filter:none !important;
+  mix-blend-mode:normal !important;
+}
+.hero-bg::after{
+  background:linear-gradient(to bottom,transparent,rgba(248,250,249,.92)) !important;
+}
+.ham span{
+  background:#0F0F0F !important;
+}
+.n5-process-floatbar{
+  background:rgba(255,255,255,.98) !important;
+  border-top:1px solid rgba(10,233,138,.22) !important;
+}
+@media(max-width:900px){
+  html,
+  body{
+    background:#FFFFFF !important;
+  }
+  .hero,
+  .hero-body,
+  .n5-builder-section,
+  .builder-card,
+  .preview-card,
+  .mobile-sales-header,
+  .review-card,
+  .collapsible-field{
+    background-color:#FFFFFF !important;
+  }
+  .n5-builder-section{
+    background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 100%) !important;
+  }
+}
+@media(prefers-color-scheme:dark){
+  :root,
+  html,
+  body{
+    color-scheme:light !important;
+    background:#FFFFFF !important;
+    color:#2D3F54 !important;
+  }
+  body{
+    background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 52%,#F5F5F3 100%) !important;
+  }
+  .nav,
+  .nav .wrap,
+  .nav-in,
+  .mob-menu,
+  .hero,
+  .hero-body,
+  .hero-badge,
+  .trust,
+  .how,
+  .testi,
+  .faq,
+  .builder-card,
+  .preview-card,
+  .mobile-sales-header,
+  .review-card,
+  .collapsible-field,
+  .value-pill,
+  .n5-process-floatbar{
+    background:#FFFFFF !important;
+    color:#2D3F54 !important;
+  }
+  .pricing,
+  .fondo,
+  .n5-builder-section{
+    background:linear-gradient(180deg,#F8FAF9 0%,#FFFFFF 100%) !important;
+  }
+  img,
+  .hero-bg,
+  .hero-bg::after,
+  .preview-card,
+  .plate-stage{
+    filter:none !important;
+    -webkit-filter:none !important;
+    opacity:1 !important;
+    mix-blend-mode:normal !important;
+  }
+}
+
 </style>
 </head>
-<body>
+<body style="background:#FFFFFF;color:#2D3F54;color-scheme:light;">
 
 <!-- NAV -->
 <nav class="nav">
@@ -2344,6 +3762,16 @@ button{-webkit-tap-highlight-color:transparent}
   <span style="margin-top:8px;display:block">© 2024 N5 Pet · <a href="#">Aviso de privacidad</a> · <a href="#">Términos</a> · <a href="#">Contacto</a></span>
 </footer>
 
+
+
+<!-- FLOATBAR GLOBAL DEL PROCESO MÓVIL -->
+<div class="n5-process-floatbar" id="n5ProcessFloatbar" data-has-back="false" data-panel="name" aria-hidden="true">
+  <div class="n5-process-floatbar__inner">
+    <button type="button" class="n5-process-floatbar__back" id="n5ProcessBack" hidden>← Atrás</button>
+    <button type="button" class="n5-process-floatbar__main" id="n5ProcessMain" disabled>Listo, agregar teléfono →</button>
+  </div>
+</div>
+
 <!-- STICKY BAR -->
 <div class="sticky" id="sticky">
   <span class="sticky-info">+1,284 mascotas ya protegidas · Envío gratis</span>
@@ -2506,14 +3934,28 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProfileState();
   updateInternalFields();
   setStage(1);
+  setBuilderProcessPanel('name');
   setTimeout(() => $('petName').focus(), 120);
 });
 
 /* ═══════════════════════════════════
    PANELES / ETAPAS
 ═══════════════════════════════════ */
+
+function setBuilderProcessPanel(panel){
+  const section = document.querySelector('.n5-builder-section');
+  const builder = document.getElementById('n5PetBuilder');
+  [section,builder].forEach(el => {
+    if (!el) return;
+    el.setAttribute('data-current-panel', panel);
+    el.classList.remove('is-panel-name','is-panel-phone','is-panel-color','is-panel-profile','is-panel-review');
+    el.classList.add('is-panel-' + panel);
+  });
+}
+
 function goPanel(panel){
   currentPanel = panel;
+  setBuilderProcessPanel(panel);
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
 
   if (panel === 'name') {
@@ -2860,5 +4302,177 @@ function resetQr(){
 }
 
 </script>
+
+
+<script>
+/* FIX V3.4 · activa la floatbar del proceso solo cuando el builder está en pantalla */
+(function(){
+  function ready(fn){
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+  ready(function(){
+    var section = document.querySelector('.n5-builder-section');
+    if (!section) return;
+
+    function updateProcessBarVisibility(){
+      var rect = section.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      var inView = rect.top < (vh - 96) && rect.bottom > 120;
+      document.body.classList.toggle('n5-process-inview', !!inView);
+    }
+
+    updateProcessBarVisibility();
+    window.addEventListener('scroll', updateProcessBarVisibility, {passive:true});
+    window.addEventListener('resize', updateProcessBarVisibility, {passive:true});
+    window.addEventListener('orientationchange', function(){ setTimeout(updateProcessBarVisibility, 220); }, {passive:true});
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          document.body.classList.toggle('n5-process-inview', entry.isIntersecting && entry.intersectionRatio > 0.08);
+        });
+      }, {threshold:[0,0.08,0.18], rootMargin:'-70px 0px -70px 0px'});
+      io.observe(section);
+    }
+  });
+})();
+</script>
+
+
+
+<script>
+/* FIX V3.6 · Floatbar global real para botones del proceso móvil */
+(function(){
+  function ready(fn){
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  ready(function(){
+    var section = document.querySelector('.n5-builder-section');
+    var bar = document.getElementById('n5ProcessFloatbar');
+    var back = document.getElementById('n5ProcessBack');
+    var main = document.getElementById('n5ProcessMain');
+    if (!section || !bar || !back || !main) return;
+
+    var map = {
+      panelName:    {panel:'name',    back:null,            main:'btnToPhone'},
+      panelPhone:   {panel:'phone',   back:'backToName',    main:'btnToColor'},
+      panelColor:   {panel:'color',   back:'backToPhone',   main:'btnToProfile'},
+      panelProfile: {panel:'profile', back:'backToColor',   main:'btnToReview'},
+      panelReview:  {panel:'review',  back:'backToProfile', main:'btnWhatsapp'}
+    };
+
+    function cleanLabel(text){
+      return String(text || '').replace(/\s+/g,' ').trim();
+    }
+
+    function getActivePanel(){
+      return section.querySelector('.step-panel.active');
+    }
+
+    function updateGlobalProcessBar(){
+      var active = getActivePanel();
+      var conf = active ? map[active.id] : null;
+      if (!conf) {
+        bar.classList.remove('is-visible');
+        bar.setAttribute('aria-hidden','true');
+        return;
+      }
+
+      var realMain = document.getElementById(conf.main);
+      var realBack = conf.back ? document.getElementById(conf.back) : null;
+
+      bar.dataset.panel = conf.panel;
+      bar.dataset.mainTarget = conf.main;
+      bar.dataset.backTarget = conf.back || '';
+      bar.classList.add('is-visible');
+      bar.setAttribute('aria-hidden','false');
+
+      if (realBack) {
+        bar.dataset.hasBack = 'true';
+        back.hidden = false;
+        back.textContent = cleanLabel(realBack.textContent) || '← Atrás';
+      } else {
+        bar.dataset.hasBack = 'false';
+        back.hidden = true;
+        back.textContent = '';
+      }
+
+      if (realMain) {
+        main.textContent = cleanLabel(realMain.textContent) || 'Continuar →';
+        main.disabled = !!realMain.disabled;
+        main.classList.toggle('is-whatsapp', conf.main === 'btnWhatsapp');
+      }
+    }
+
+    back.addEventListener('click', function(){
+      var id = bar.dataset.backTarget;
+      var target = id ? document.getElementById(id) : null;
+      if (target) target.click();
+      setTimeout(updateGlobalProcessBar, 30);
+    });
+
+    main.addEventListener('click', function(){
+      var id = bar.dataset.mainTarget;
+      var target = id ? document.getElementById(id) : null;
+      if (!target || target.disabled) return;
+      target.click();
+      setTimeout(updateGlobalProcessBar, 30);
+    });
+
+    /* Si se abre “editar mensaje” o “agregar notas”, sube el bloque para que la barra no lo tape. */
+    ['toggleQrMessage','togglePetNotes'].forEach(function(id){
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        setTimeout(function(){
+          var box = btn.closest('.collapsible-field');
+          if (box) box.scrollIntoView({behavior:'smooth', block:'center'});
+          updateGlobalProcessBar();
+        }, 130);
+      });
+    });
+
+    document.addEventListener('input', updateGlobalProcessBar, true);
+    document.addEventListener('change', updateGlobalProcessBar, true);
+    document.addEventListener('click', function(){ setTimeout(updateGlobalProcessBar, 20); }, true);
+
+    var observer = new MutationObserver(updateGlobalProcessBar);
+    observer.observe(section, {subtree:true, attributes:true, attributeFilter:['class','disabled']});
+
+    window.addEventListener('resize', updateGlobalProcessBar, {passive:true});
+    window.addEventListener('orientationchange', function(){setTimeout(updateGlobalProcessBar, 250);}, {passive:true});
+
+    updateGlobalProcessBar();
+  });
+})();
+</script>
+
+
+<script id="n5-force-light-runtime">
+(function(){
+  function forceLight(){
+    var root = document.documentElement;
+    var body = document.body;
+    root.setAttribute('data-theme','light');
+    root.classList.add('n5-force-light');
+    root.style.colorScheme = 'light';
+    root.style.backgroundColor = '#FFFFFF';
+    if(body){
+      body.style.colorScheme = 'light';
+      body.style.backgroundColor = '#FFFFFF';
+      body.style.color = '#2D3F54';
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute('content','#FFFFFF');
+  }
+  forceLight();
+  document.addEventListener('DOMContentLoaded', forceLight);
+  window.addEventListener('pageshow', forceLight);
+})();
+</script>
+
 </body>
 </html>
