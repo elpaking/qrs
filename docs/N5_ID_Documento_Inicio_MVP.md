@@ -1,7 +1,9 @@
 # N5 ID — Documento de Inicio del MVP
 
-**Versión:** 1.0  
-**Fecha:** 2 de julio de 2026  
+**Versión:** 1.1  
+**Fecha de inicio:** 2 de julio de 2026  
+**Última actualización:** 2 de julio de 2026  
+**Estado:** Infraestructura, base de datos, perfil dinámico y acceso administrativo funcionando  
 **Proyecto:** N5 ID  
 **Primera línea comercial:** N5 PET  
 **Arquitectura elegida:** BanaHosting + PHP + MySQL + panel privado por token  
@@ -9,6 +11,50 @@
 **Landing comercial:** `pet.norte5.com`
 
 ---
+
+## Estado actual del proyecto
+
+Avance aproximado del MVP: **60%**.
+
+### Completado
+
+- PHP 8.4.22 confirmado.
+- MariaDB 11.4.12 confirmada.
+- Base de datos creada.
+- Esquema inicial importado correctamente.
+- 15 tablas N5 ID verificadas.
+- 9 tipos de ID iniciales registrados.
+- Conexión PDO entre PHP y MariaDB funcionando.
+- Ruta pública dinámica funcionando.
+- Perfil PET de prueba publicado en `q.norte5.com/T8M2QR`.
+- Administrador inicial creado.
+- Instalador administrativo bloqueado después del primer uso.
+- Inicio y cierre de sesión funcionando.
+- Protección CSRF y límite básico de intentos implementados.
+- Panel administrativo mostrando el perfil de Max.
+- Documento rector y esquema SQL guardados en GitHub.
+
+### Pendiente inmediato
+
+1. Crear el formulario **Nuevo perfil PET** en `/admin/`.
+2. Permitir editar perfiles existentes.
+3. Generar códigos públicos únicos.
+4. Subir y optimizar fotografías.
+5. Generar enlaces privados de edición mediante token.
+6. Construir el panel privado del cliente.
+7. Aplicar el diseño final N5 PET al perfil público.
+8. Probar el flujo completo con perfiles reales.
+
+### Punto exacto para continuar
+
+> Construir dentro de `/admin/` el formulario para crear un nuevo perfil PET sin utilizar phpMyAdmin.
+
+### Decisión sobre inicio de sesión social
+
+El acceso mediante Google podrá agregarse después del MVP. Facebook queda pospuesto. El panel administrativo de N5 conservará su acceso privado actual.
+
+---
+
 
 ## 1. Decisión técnica
 
@@ -1036,36 +1082,36 @@ Después de lanzar se medirán:
 
 ### Infraestructura
 
-- [ ] Revisar PHP disponible.
-- [ ] Revisar MySQL/MariaDB.
-- [ ] Confirmar acceso a phpMyAdmin.
-- [ ] Confirmar SSL.
-- [ ] Confirmar raíz de `q.norte5.com`.
+- [x] Revisar PHP disponible.
+- [x] Revisar MySQL/MariaDB.
+- [x] Confirmar acceso a phpMyAdmin.
+- [x] Confirmar SSL.
+- [x] Confirmar raíz de `q.norte5.com`.
 - [ ] Confirmar GD/ImageMagick.
 - [ ] Confirmar Cron Jobs.
 - [ ] Crear respaldo actual.
 
 ### Proyecto
 
-- [ ] Crear repositorio.
-- [ ] Crear estructura de carpetas.
-- [ ] Crear archivo `.env` o configuración protegida.
-- [ ] Crear conexión PDO.
-- [ ] Crear esquema SQL.
-- [ ] Crear usuario administrador.
-- [ ] Crear datos iniciales.
+- [x] Crear repositorio.
+- [x] Crear estructura de carpetas.
+- [x] Crear configuración protegida.
+- [x] Crear conexión PDO.
+- [x] Crear esquema SQL.
+- [x] Crear usuario administrador.
+- [x] Crear datos iniciales.
 
 ### Perfil
 
-- [ ] Crear ruta `/{codigo}`.
+- [x] Crear ruta `/{codigo}`.
 - [ ] Crear plantilla PET.
 - [ ] Crear estado perdido.
 - [ ] Crear botones de contacto.
-- [ ] Crear errores 404 e inactivo.
+- [x] Crear errores 404 e inactivo.
 
 ### Administración
 
-- [ ] Crear login N5.
+- [x] Crear login N5.
 - [ ] Crear formulario de perfil.
 - [ ] Crear generador de códigos.
 - [ ] Crear generador de tokens.
@@ -1085,7 +1131,7 @@ Después de lanzar se medirán:
 - [ ] Crear exportación CSV.
 - [ ] Crear respaldo automático.
 - [ ] Crear registro de eventos.
-- [ ] Probar con códigos reales.
+- [x] Probar con código de prueba `T8M2QR`.
 - [ ] Documentar procedimiento de soporte.
 
 ---
@@ -1114,3 +1160,26 @@ La primera meta no es construir el sistema definitivo.
 La primera meta es:
 
 > Crear, publicar y editar perfiles N5 PET de forma segura, rápida y repetible, sin tocar archivos HTML por cada cliente.
+
+---
+
+## 25. Historial de versiones
+
+### Versión 1.1 — 2 de julio de 2026
+
+- Confirmados PHP 8.4.22 y MariaDB 11.4.12.
+- Creada e importada la base N5 ID.
+- Verificadas 15 tablas y 9 tipos de ID.
+- Configurada la conexión PDO.
+- Publicado el perfil dinámico de prueba `T8M2QR`.
+- Instalado el primer administrador.
+- Implementados login, sesión, CSRF, cierre de sesión y listado inicial.
+- Pospuesto Google Login hasta después del MVP.
+- Definido como siguiente paso el formulario **Nuevo perfil PET**.
+
+### Versión 1.0 — 2 de julio de 2026
+
+- Definida la arquitectura BanaHosting + PHP + MariaDB.
+- Definido el panel privado por token.
+- Definida la estructura multproducto de N5 ID.
+
