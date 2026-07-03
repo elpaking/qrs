@@ -1,7 +1,7 @@
 -- ============================================================
 -- N5 ID - Esquema inicial MVP
 -- Compatible con MariaDB 11.4 / MySQL 8
--- Base objetivo: juipojak_n5_id
+-- Base objetivo: base de datos N5 ID
 -- Fecha: 2026-07-02
 -- ============================================================
 
